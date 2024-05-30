@@ -27,17 +27,35 @@ public class MoveMentRigid : MonoBehaviour
     private LayerMask groundLayer;
 
     private bool isGrounded;
+    private Vector2 footPosition;
+    private Vector2 footArea;
 
     private Rigidbody2D rigid2D;
+    private new Collider2D collider2D;
 
     public bool IsLonJump { set; get; } = false;
 
     private void Awake()
     {
         rigid2D = GetComponent<Rigidbody2D>();
+        collider2D = GetComponent<Collider2D>();    
     }
     private void FixedUpdate()
     {
+
+        Bounds bounds = collider2D.bounds;
+
+        footPosition = new Vector2(bounds.center.x, bounds.min.y);
+
+        footArea = new Vector2((bounds.max.x - bounds.min.x) * 0.5f, 0.1f);
+
+        isGrounded = Physics2D.OverlapBox(footPosition, footArea,0,groundLayer);
+
+        if (isGrounded == true && rigid2D.velocity.y <= 0)
+        {
+            currentJumpCount = maxJumpCount;    
+        }
+
         if (IsLonJump && rigid2D.velocity.y > 0)
         {
             rigid2D.gravityScale = lowGravity;
@@ -56,8 +74,13 @@ public class MoveMentRigid : MonoBehaviour
     }
     public bool JumpTo()
     {
-        rigid2D.velocity = new Vector2(rigid2D.velocity.x,jumpForce);
+        if (currentJumpCount > 0)
+        {
+            rigid2D.velocity = new Vector2(rigid2D.velocity.x, jumpForce);
+            currentJumpCount--;
+            return true;
+        }
+        return false;
 
-        return true;
     }
 }

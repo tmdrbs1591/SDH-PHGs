@@ -226,8 +226,8 @@ GameObject:
   - component: {fileID: 1097455838}
   - component: {fileID: 1097455837}
   - component: {fileID: 1097455836}
-  m_Layer: 0
-  m_Name: Square
+  m_Layer: 6
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -462,6 +462,10 @@ MonoBehaviour:
   jumpForce: 12
   lowGravity: 2
   highGravity: 3
+  maxJumpCount: 2
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!50 &1148802770
 Rigidbody2D:
   serializedVersion: 4
